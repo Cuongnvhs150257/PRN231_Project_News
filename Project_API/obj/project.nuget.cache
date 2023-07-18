@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qw8dHJl9e2+xtllgc2gai/vlCRpF3x+K/DiV00GWKBbylspICcXgQxqYwW+WzsSC3beVqGa71llRYzIv7oQF6g==",
+  "dgSpecHash": "q3NEXAJxUnxvfFbJ1ljbF+Gn183jNS9jK5fcaotVpgr+XEXZNzByEHcfVhIBLLHiu2iegCTBYdtrjlhtA4hz+Q==",
   "success": true,
-  "projectFilePath": "D:\\study\\PRN231\\PRN231_Project\\Project_API\\Project_API.csproj",
+  "projectFilePath": "D:\\study\\PRN231\\PRN231_Project\\PRN231_Project_News\\Project_API\\Project_API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\s\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\s\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
