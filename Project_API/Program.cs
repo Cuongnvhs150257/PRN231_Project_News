@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Project_API.DTO;
 using Project_API.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,9 @@ builder.Services.AddCors();
 builder.Services.AddDbContext<PRN_ProjectContext>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("PRN_Project")));
 
+// loai bo errol vong lap vong tron
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 var config = new MapperConfiguration(cfg =>
 {
