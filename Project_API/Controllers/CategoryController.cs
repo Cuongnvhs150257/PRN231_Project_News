@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Project_API.DTO;
 using Project_API.Models;
 
 namespace Project_API.Controllers
@@ -79,13 +80,53 @@ namespace Project_API.Controllers
             return Ok(newCate);
         }
 
-        /*
-        [Route("CreateCate")]
+       
+        [Route("DeleteCate/id")]
         [HttpDelete]
-        public IActionResult DeleteCate(string cateName)
+        public async Task<IActionResult> DeleteCate(int id)
         {
+            try
+            {
+                var exsitCate = _context.Categories.FirstOrDefault(x => x.CategoryId == id);
+                if (exsitCate == null)
+                {
+                    return NotFound("Does not have category ! Plz check again!");
+                }           
 
+                _context.Categories.Remove(exsitCate);
+                var rowAffected = _context.SaveChanges();
+                return Ok(rowAffected);
+            }
+            catch (Exception)
+            {
+
+                return Conflict();
+            }
         }
-        */
+
+        [Route("EditCate")]
+        [HttpPut]
+        public async Task<IActionResult> EditCate(int cateid, CategoryDTO category)
+        {
+            try
+            {
+                var exsitCate = _context.Categories.FirstOrDefault(x => x.CategoryId == cateid);
+                if (exsitCate == null)
+                {
+                    return NotFound("Category not Found ! Plz check again!");
+                }
+
+                exsitCate.CategoryName = category.CategoryName;
+                _context.Categories.Update(exsitCate);
+                var rowAffected = _context.SaveChanges();
+                return Ok(exsitCate);
+            }
+            catch (Exception)
+            {
+
+                return Conflict();
+            }
+        }
+
     }
 }
