@@ -19,7 +19,7 @@ namespace Project_API.Controllers
             _mapper = mapper;
         }
 
-        [Route("GetOrder")]
+        [Route("GetArticles")]
         [HttpGet]
         public IActionResult GetArticles()
         {
@@ -27,7 +27,7 @@ namespace Project_API.Controllers
             return Ok(_mapper.Map<List<ArticleDTO>>(articles));
         }
 
-        [Route("GetOrder/{id}")]
+        [Route("GetArticle/{id}")]
         [HttpGet]
         public IActionResult GetArticleById(int id)
         {

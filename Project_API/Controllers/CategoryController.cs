@@ -79,12 +79,13 @@ namespace Project_API.Controllers
             return Ok(newCate);
         }
 
-
+        /*
         [Route("CreateCate")]
         [HttpDelete]
         public IActionResult DeleteCate(string cateName)
         {
 
         }
+        */
     }
 }
