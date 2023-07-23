@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -101,8 +102,6 @@ namespace Project_Web_Client
             
             if (response.IsSuccessStatusCode)
             {
-                // The request was successful, so get the user data from the response
-                var usersu = await response.Content.ReadAsStringAsync();
 
                 // Return the user data to the view
                 return RedirectToAction("Index", "Users");
@@ -194,11 +193,34 @@ namespace Project_Web_Client
 
             if (response.IsSuccessStatusCode)
             {
-                // The request was successful, so get the user data from the response
-                var usersu = await response.Content.ReadAsStringAsync();
 
                 // Return the user data to the view
                 return RedirectToAction("Details", "Users");
+            }
+            else
+            {
+                // The request was not successful, so return an error
+                return BadRequest();
+            }
+        }
+        public async Task<IActionResult> Delete()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return NotFound("userid is null");
+            }
+            var uri = UserApiUrl + userId;
+            var response = await client.DeleteAsync(uri);
+
+            if (response.IsSuccessStatusCode)
+            {
+                HttpContext.Session.Remove("UserId");
+                HttpContext.Session.Remove("Username");
+                HttpContext.Session.Remove("Role");
+                // Return the user data to the view
+                return RedirectToAction("Index", "Users");
             }
             else
             {
