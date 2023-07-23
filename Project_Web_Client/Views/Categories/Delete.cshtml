@@ -19,9 +19,11 @@
         </dd>
     </dl>
     
-    <form asp-action="Delete">
+    <form asp-action="Delete" asp-controller="Category">
         <input type="hidden" asp-for="CategoryId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+
+        <input asp-for="CategoryName" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> 
         <a asp-action="Index">Back to List</a>
     </form>
 </div>
