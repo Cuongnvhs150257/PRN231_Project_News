@@ -27,6 +27,36 @@ namespace Project_API.Controllers
 
         }
 
+
+        [HttpGet("GetUserById/{username}/{password}")]
+        public async Task<ActionResult<User>> Login( string username, string password)
+        {
+            try
+            {
+                var existuser = _context.Users.FirstOrDefault(x => x.Username.EndsWith(username));
+
+                if (existuser == null)
+                {
+                    return NotFound("Does not have acc!");
+                }
+                var success = _context.Users.FirstOrDefault(x => x.Password.EndsWith(password));
+
+                if (success == null)
+                {
+                    return NotFound("Password is not correct!");
+                }
+
+                return Ok(existuser);
+
+            }
+            catch(Exception ex)
+            {
+                return Conflict(ex);
+
+            }
+
+        }
+
         [HttpPost("CreateUser")]
         public IActionResult CreateNewUser(UserDTO user)
         {

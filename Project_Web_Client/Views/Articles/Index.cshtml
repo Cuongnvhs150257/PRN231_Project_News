@@ -41,70 +41,159 @@
     </section><!-- End Hero Slider Section -->
 
     <!-- ======= Post Grid Section ======= -->
-    <section id="posts" class="posts">
-      <div class="container" data-aos="fade-up">
-        <div class="row g-5">
-          <div class="col-lg-4">
-            <div class="post-entry-1 lg">
-              <a href="single-post.html"><img src="assets/img/post-landscape-1.jpg" alt="" class="img-fluid"></a>
-              <div class="post-meta"><span class="date">Culture</span> <span class="mx-1">&bullet;</span> <span>Jul 5th '22</span></div>
-              <h2><a href="single-post.html">11 Work From Home Part-Time Jobs You Can Do Now</a></h2>
-              <p class="mb-4 d-block">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero temporibus repudiandae, inventore pariatur numquam cumque possimus exercitationem? Nihil tempore odit ab minus eveniet praesentium, similique blanditiis molestiae ut saepe perspiciatis officia nemo, eos quae cumque. Accusamus fugiat architecto rerum animi atque eveniet, quo, praesentium dignissimos</p>
+    <section>
+      <div class="container">
+        <div class="row">
 
-              <div class="d-flex align-items-center author">
-                <div class="photo"><img src="assets/img/person-1.jpg" alt="" class="img-fluid"></div>
-                <div class="name">
-                  <h3 class="m-0 p-0">Cameron Williamson</h3>
+          <div class="col-md-9" data-aos="fade-up">
+            
+              @foreach (var item in Model) {
+            <div class="d-md-flex post-entry-2 half">
+              <a href="single-post.html" class="me-4 thumbnail">
+                <img src="assets/img/post-landscape-6.jpg" alt="" class="img-fluid">
+              </a>
+              <div>
+                <div class="post-meta"><span class="date">Culture</span> <span class="mx-1">&bullet;</span> <span>@Html.DisplayFor(modelItem => item.CreateDate)</span></div>
+                <h3><a href="single-post.html">@Html.DisplayFor(modelItem => item.Title)</a></h3>
+                <p>@Html.DisplayFor(modelItem => item.Summary)</p>
+                <div class="d-flex align-items-center author">
+                  <div class="photo"><img src="assets/img/person-2.jpg" alt="" class="img-fluid"></div>
+                  <div class="name">
+                    <h3 class="m-0 p-0">@Html.DisplayFor(modelItem => item.User.Username)</h3>
+                  </div>
                 </div>
               </div>
             </div>
+            }
+           
 
-          </div>
-
-          <div class="col-lg-8">
-            <div class="row g-5">
-              <div class="col-lg-4 border-start custom-border">
-
-               @foreach (var item in Model) {
-                <div class="post-entry-1">   
-                  <a href="single-post.html"><img src="assets/img/post-landscape-2.jpg" alt="" class="img-fluid"></a>
-                  <div class="post-meta"><span class="date">Sport</span> <span class="mx-1">&bullet;</span> <span>@Html.DisplayFor(modelItem => item.CreateDate)</span></div>
-                  <h2><a href="single-post.html">@Html.DisplayFor(modelItem => item.Title)</a></h2>
-                </div>
-               }
+            <div class="text-start py-4">
+              <div class="custom-pagination">
+                <a href="#" class="prev">Prevous</a>
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#" class="next">Next</a>
               </div>
-              <div class="col-lg-4 border-start custom-border">
-                
-              </div>
-
-              <!-- Trending Section -->
-              <div class="col-lg-4">
-
-                <div class="trending">
-                  <h3>Trending</h3>
-                  <ul class="trending-post">
-
-                   @foreach (var item in Model) { 
-                    <li>
-                      <a href="single-post.html">
-                        <span class="number">1</span>
-                        <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
-                        <span class="author">@Html.DisplayFor(modelItem => item.User.Username)</span>
-                      </a>
-                    </li>
-                   }
-                  </ul>
-                </div>
-
-              </div> <!-- End Trending Section -->
             </div>
           </div>
 
-        </div> <!-- End .row -->
+          <div class="col-md-3">
+            <!-- ======= Sidebar ======= -->
+            <div class="aside-block">
+
+              <ul class="nav nav-pills custom-tab-nav mb-4" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="pills-popular-tab" data-bs-toggle="pill" data-bs-target="#pills-popular" type="button" role="tab" aria-controls="pills-popular" aria-selected="true">Popular</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-trending-tab" data-bs-toggle="pill" data-bs-target="#pills-trending" type="button" role="tab" aria-controls="pills-trending" aria-selected="false">Trending</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-latest-tab" data-bs-toggle="pill" data-bs-target="#pills-latest" type="button" role="tab" aria-controls="pills-latest" aria-selected="false">Latest</button>
+                </li>
+              </ul>
+
+              <div class="tab-content" id="pills-tabContent">
+
+                <!-- Popular -->
+                <div class="tab-pane fade show active" id="pills-popular" role="tabpanel" aria-labelledby="pills-popular-tab">
+                    @foreach (var item in Model) {
+                  <div class="post-entry-1 border-bottom">
+                    <div class="post-meta"><span class="date">Sport</span> <span class="mx-1">&bullet;</span> <span>@Html.DisplayFor(modelItem => item.CreateDate)</span></div>
+                    <h2 class="mb-2"><a href="#">@Html.DisplayFor(modelItem => item.Title)</a></h2>
+                    <span class="author mb-3 d-block">@Html.DisplayFor(modelItem => item.User.Username)</span>
+                  </div>
+                    }
+                  
+                </div> <!-- End Popular -->
+
+                <!-- Trending -->
+                <div class="tab-pane fade" id="pills-trending" role="tabpanel" aria-labelledby="pills-trending-tab">
+                  @foreach (var item in Model) {
+                  <div class="post-entry-1 border-bottom">
+                    <div class="post-meta"><span class="date">Sport</span> <span class="mx-1">&bullet;</span> <span>@Html.DisplayFor(modelItem => item.CreateDate)</span></div>
+                    <h2 class="mb-2"><a href="#">@Html.DisplayFor(modelItem => item.Title)</a></h2>
+                    <span class="author mb-3 d-block">@Html.DisplayFor(modelItem => item.User.Username)</span>
+                  </div>
+                    }
+
+                 
+                </div> <!-- End Trending -->
+
+                <!-- Latest -->
+                <div class="tab-pane fade" id="pills-latest" role="tabpanel" aria-labelledby="pills-latest-tab">
+                  @foreach (var item in Model) {
+                  <div class="post-entry-1 border-bottom">
+                    <div class="post-meta"><span class="date">Sport</span> <span class="mx-1">&bullet;</span> <span>@Html.DisplayFor(modelItem => item.CreateDate)</span></div>
+                    <h2 class="mb-2"><a href="#">@Html.DisplayFor(modelItem => item.Title)</a></h2>
+                    <span class="author mb-3 d-block">@Html.DisplayFor(modelItem => item.User.Username)</span>
+                  </div>
+                    }
+                </div> <!-- End Latest -->
+
+              </div>
+            </div>
+
+            <div class="aside-block-a">
+              <h3 class="aside-title">Categories</h3>
+              <ul class="aside-links list-unstyled">
+                <li><a href="#"><i class="bi bi-chevron-right"></i> Business</a></li>
+              </ul>
+            </div><!-- End Categories -->
+
+          </div>
+
+        </div>
       </div>
+    </section>
     </section> <!-- End Post Grid Section -->
 
-  
+  <script>
+        $(document).ready(function() {
+            loadCategories();
+           
+            function loadCategories() {
+                $.ajax({
+                    url: 'http://localhost:5071/api/Category/GetAllCategory',
+                    type: "get",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(result, status, xhr) {
+                        var categoryList = '';
+                        $.each(result, function(index, value) {
+                            // Cập nhật nội dung của <div> chứa danh sách category
+                            categoryList += '<li><a href="#" onclick="getCategoryById(' + value.categoryId + ')">' + value.categoryName + '</a></li>';
+                        });
+                        $('.aside-block-a ul').html(categoryList);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr);
+                    }
+                });
+            }
+        });
+          function getCategoryById(categoryId) {
+                $.ajax({
+                    url: 'http://localhost:5071/api/Category/GetCategoryById/Id?id=' + categoryId,
+                    type: "get",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(result, status, xhr) {
+                        // Xử lý kết quả trả về từ API
+                        window.location.href = "/Categories/Index";
+                        console.log(result);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr);
+                    }
+                });
+             }
+
+
+    </script>
 
 
 
