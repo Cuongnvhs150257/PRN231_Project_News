@@ -21,6 +21,8 @@ namespace Project_Web_Client
             client.DefaultRequestHeaders.Accept.Add(contentType);
             CateApiUrl = "http://localhost:5071/api/Category/";
         }
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             HttpResponseMessage response = await client.GetAsync(CateApiUrl+ "GetAllCategory");
@@ -33,27 +35,111 @@ namespace Project_Web_Client
             return View(listCate);
         }
 
-
-
-        // GET: Articles/Create
-        public IActionResult Create()
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email");
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ArticleId,Title,Content,CreateDate,EditDate,View,Summary,UserId")] Article article)
+        public async Task<IActionResult> Create(Category category)
         {
-            if (ModelState.IsValid)
+            if (category == null)
             {
-                _context.Add(article);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return NotFound("category name is null");
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", article.UserId);
-            return View(article);
+
+            var newcate = new Category
+            {
+                CategoryName = category.CategoryName,
+            };
+            var content = new StringContent(JsonSerializer.Serialize(newcate));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var uri = CateApiUrl + "CreateCate";
+
+            var response = await client.PostAsync(uri, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+
+                // Return the user data to the view
+                return RedirectToAction("Index", "Categories");
+            }
+            else
+            {
+                // The request was not successful, so return an error
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int CategoryId)
+        {
+            if (CategoryId == null)
+            {
+                return NotFound("CategoryId is null");
+            }
+            var uri = CateApiUrl + "GetCategoryById/Id?id=" + CategoryId;
+            var response = await client.GetAsync(uri);
+
+            string strData = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            Category cate = JsonSerializer.Deserialize<Category>(strData, options);
+            return View(cate);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Category category)
+        {
+            if (category == null)
+            {
+                return NotFound("category is null");
+            }
+
+            var newcate = new Category
+            {
+                CategoryName = category.CategoryName,
+            };
+            var content = new StringContent(JsonSerializer.Serialize(newcate));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var uri = CateApiUrl + "EditCate?cateid=" + category.CategoryId;
+
+            var response = await client.PutAsync(uri, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Return the user data to the view
+                return RedirectToAction("Index", "Categories");
+            }
+            else
+            {
+                // The request was not successful, so return an error
+                return BadRequest();
+            }
+        }
+
+
+        public async Task<IActionResult> Delete(int CategoryId)
+        {
+            if (CategoryId == null)
+            {
+                return NotFound("userid is null");
+            }
+            var uri = CateApiUrl + "DeleteCate/id?id=" + CategoryId;
+            var response = await client.DeleteAsync(uri);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "Categories");
+            }
+            else
+            {
+                // The request was not successful, so return an error
+                return BadRequest();
+            }
         }
     }
 }

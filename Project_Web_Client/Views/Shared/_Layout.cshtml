@@ -1,6 +1,7 @@
 ﻿@{
     var userId = Context.Session.GetInt32("UserId");
     var userName = Context.Session.GetString("Username");
+    var role = Context.Session.GetString("Role");
 }
 
 <!DOCTYPE html>
@@ -63,7 +64,6 @@
                         <ul>
                         </ul>
                     </li>
-
                     <li><a href="about.html">About</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
@@ -78,7 +78,7 @@
                 <i class="bi bi-list mobile-nav-toggle"></i>
 
                 <a href="@Url.Action("Index","Users")" class="mx-2">
-                        @if(userId == null){
+                    @if(userId == null){
                         <span class="">Login</span>
                     }
                     else

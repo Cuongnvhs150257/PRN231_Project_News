@@ -31,26 +31,35 @@ namespace Project_API.Controllers
         [HttpGet]
         public IActionResult GetArticleById(int id)
         {
-            var articles = _context.Articles.Include(x => x.User).Include(x => x.Categories).FirstOrDefault(x => x.ArticleId == id);
-
-            var dto = new ArticleDTO();
-
-            dto.UserId = articles.ArticleId;
-            dto.Title = articles.Title;
-            dto.CreateDate = articles.CreateDate;
-            dto.EditDate = articles.EditDate;
-            dto.Content = articles.Content;
-            dto.Summary = articles.Summary;
-            dto.Img = articles.Img;
-
-            foreach (var item in articles.Categories)
+            try
             {
-                dto.Categories = new List<CategoryDTO> { 
-                    
-                    new CategoryDTO {CategoryId = item.CategoryId, CategoryName = item.CategoryName, } 
+                var articles = _context.Articles.Include(x => x.User).Include(x => x.Categories).FirstOrDefault(x => x.ArticleId == id);
+
+                var dto = new ArticleDTO();
+
+                dto.ArticleId = articles.ArticleId;
+                dto.UserId = articles.User.UserId;
+                dto.Title = articles.Title;
+                dto.CreateDate = articles.CreateDate;
+                dto.EditDate = articles.EditDate;
+                dto.Content = articles.Content;
+                dto.Summary = articles.Summary;
+                dto.Img = articles.Img;
+
+                foreach (var item in articles.Categories)
+                {
+                    dto.Categories = new List<CategoryDTO> {
+
+                    new CategoryDTO {CategoryId = item.CategoryId, CategoryName = item.CategoryName, }
                 };
+                }
+                return Ok(dto);
             }
-            return Ok(dto);
+            catch (Exception ex)
+            {
+
+                return Conflict(ex);
+            }
         }
         [HttpPost("CreateNews")]
         public IActionResult CreateNews(ArticleDTO article)

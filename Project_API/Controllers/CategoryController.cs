@@ -30,11 +30,11 @@ namespace Project_API.Controllers
 
         [Route("GetCategoryById/Id")]
         [HttpGet]
-        public IActionResult GetCateByName(int id)
+        public async Task<Category> GetCateById(int id)
         {
-            List<Category> listCate = _context.Categories.Where(c => c.CategoryId == id).ToList();
+           var listCate = _context.Categories.FirstOrDefault(c => c.CategoryId == id);
 
-            return Ok(listCate);
+            return listCate;
         }
 
         [Route("GetCategoryByName/name")]
@@ -48,18 +48,18 @@ namespace Project_API.Controllers
 
         [Route("CreateCate")]
         [HttpPost]
-        public IActionResult CreateCate(string cateName) 
+        public IActionResult CreateCate(CategoryDTO category) 
         {
             var newCate = new Category();
             try
             {
-                if (cateName == null)
+                if (category == null)
                 {
                     return BadRequest();
                 }
 
                 
-                newCate.CategoryName = cateName;
+                newCate.CategoryName = category.CategoryName;
                 _context.Categories.Add(newCate);
                 var rowAffect = _context.SaveChanges();
 
