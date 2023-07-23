@@ -243,7 +243,7 @@
         });
           function getCategoryById(categoryId) {
                 $.ajax({
-                    url: 'http://localhost:5071/api/Category/GetCategoryById/Id?id=' + categoryId,
+                    url: 'http://localhost:5071/api/Article/GetArticleByCate/' + categoryId,
                     type: "get",
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
