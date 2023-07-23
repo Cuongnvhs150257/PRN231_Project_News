@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Project_API.DTO;
 using Project_API.Models;
 
 namespace Project_Web_Client
@@ -40,8 +41,51 @@ namespace Project_Web_Client
             List<Article> listArticles = JsonSerializer.Deserialize<List<Article>>(strData, options);
             return View(listArticles);
         }
+        public async Task<IActionResult> Details(int articleId)
+        {
+
+            var uri = "http://localhost:5071/api/Article/GetArticle/" + articleId;
+            var response = await client.GetAsync(uri);
+
+            string strData = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            Article article = JsonSerializer.Deserialize<Article>(strData, options);
+            return View(article);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int articleId)
+        {
+            var uri = "http://localhost:5071/api/Article/GetArticle/" + articleId;
+            var response = await client.GetAsync(uri);
+
+            string strData = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            Article article = JsonSerializer.Deserialize<Article>(strData, options);
+            return View(article);
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(ArticleDTO articleId)
+        //{
+        //    var uri = "http://localhost:5071/api/Article/GetArticle/ " + articleId;
+        //    var response = await client.GetAsync(uri);
+
+        //    string strData = await response.Content.ReadAsStringAsync();
+        //    var options = new JsonSerializerOptions
+        //    {
+        //        PropertyNameCaseInsensitive = true,
+        //    };
+        //    Article article = JsonSerializer.Deserialize<Article>(strData, options);
+        //    return View(article);
+        //}
 
 
-        
     }
 }

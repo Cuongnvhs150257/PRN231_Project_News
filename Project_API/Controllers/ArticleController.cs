@@ -41,6 +41,7 @@ namespace Project_API.Controllers
             dto.EditDate = articles.EditDate;
             dto.Content = articles.Content;
             dto.Summary = articles.Summary;
+            dto.Img = articles.Img;
 
             foreach (var item in articles.Categories)
             {
@@ -70,6 +71,7 @@ namespace Project_API.Controllers
                 newArticle.UserId = 2;
                 newArticle.Content = article.Content;
                 newArticle.Summary = article.Summary;
+                newArticle.Img = article.Img;
 
                 var cates = article.Categories.Select(c => c.CategoryId).ToList();
 
@@ -122,6 +124,7 @@ namespace Project_API.Controllers
                 existArticle.View = article.View;
                 existArticle.Summary = article.Summary;
                 existArticle.UserId = 2;
+                existArticle.Img = article.Img;
 
                 foreach (var cate in existArticle.Categories.ToList())
                 {
@@ -183,5 +186,29 @@ namespace Project_API.Controllers
                 return Conflict();
             }
         }
+
+        [Route("GetArticleByCate/{cateId}")]
+        [HttpGet]
+        public IActionResult GetArticleByCateId(int cateId)
+        {
+
+            var listArticlesByCate = new List<Article>();
+
+            var articles = _context.Articles.Include(x => x.User).Include(x => x.Categories).ToList();
+            foreach (var article in articles)
+            {
+                foreach (var cate in article.Categories)
+                {
+                    if (cate.CategoryId == cateId)
+                    {
+                        listArticlesByCate.Add(article);
+                    }
+                }
+            }
+
+            return Ok(listArticlesByCate);
+        }
+
     }
+
 }
