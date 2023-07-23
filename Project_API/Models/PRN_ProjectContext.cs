@@ -47,6 +47,11 @@ namespace Project_API.Models
                     .HasColumnType("datetime")
                     .HasColumnName("edit_date");
 
+                entity.Property(e => e.Img)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("img");
+
                 entity.Property(e => e.Summary)
                     .HasMaxLength(255)
                     .HasColumnName("summary");

@@ -17,6 +17,7 @@ namespace Project_API.Models
         public DateTime? EditDate { get; set; }
         public int? View { get; set; }
         public string? Summary { get; set; }
+        public string? Img { get; set; }
         public int UserId { get; set; }
 
         public virtual User User { get; set; } = null!;

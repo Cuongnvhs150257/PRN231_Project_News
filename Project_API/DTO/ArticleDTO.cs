@@ -9,6 +9,7 @@
         public DateTime? EditDate { get; set; } = DateTime.Now;
         public int? View { get; set; }
         public string? Summary { get; set; }
+        public string? Img { get; set; }
         public int UserId { get; set; }
         public List<CategoryDTO> Categories { get; set; }
     }
