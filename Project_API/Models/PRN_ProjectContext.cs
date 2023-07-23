@@ -48,7 +48,6 @@ namespace Project_API.Models
                     .HasColumnName("edit_date");
 
                 entity.Property(e => e.Img)
-                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("img");
 
@@ -112,7 +111,6 @@ namespace Project_API.Models
                     .HasColumnName("email");
 
                 entity.Property(e => e.Img)
-                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("img");
 

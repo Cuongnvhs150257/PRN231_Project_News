@@ -47,8 +47,18 @@ namespace Project_Web_Client
 
             if (response.IsSuccessStatusCode)
             {
-                // The request was successful, so get the user data from the response
-                var user = await response.Content.ReadAsStringAsync();
+                string strData = await response.Content.ReadAsStringAsync();
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                };
+
+                User exuser = JsonSerializer.Deserialize<User>(strData, options);
+
+                HttpContext.Session.SetInt32("UserId", exuser.UserId);
+                HttpContext.Session.SetString("Username", exuser.Username);
+                HttpContext.Session.SetString("Role", exuser.Role);
 
                 // Return the user data to the view
                 return RedirectToAction("Index", "Articles");
@@ -59,7 +69,7 @@ namespace Project_Web_Client
                 return BadRequest();
             }
 
-            return View();
+            
         }
 
         [HttpGet]
@@ -103,7 +113,98 @@ namespace Project_Web_Client
                 return BadRequest();
             }
 
-            return View();
+            
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return NotFound("userid is null");
+            }
+            var uri = UserApiUrl + "GetUserById/" + userId;
+            var response = await client.GetAsync(uri);
+
+            string strData = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            User user = JsonSerializer.Deserialize<User>(strData, options);
+
+            return View(user);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Remove("UserId");
+            HttpContext.Session.Remove("Username");
+            HttpContext.Session.Remove("Role");
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return NotFound("userid is null");
+            }
+            var uri = UserApiUrl + "GetUserById/" + userId;
+            var response = await client.GetAsync(uri);
+
+            string strData = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            User user = JsonSerializer.Deserialize<User>(strData, options);
+
+            return View(user);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(User user)
+        {
+            if (user == null)
+            {
+                return NotFound("username, password or email is null");
+            }
+
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            var newuser = new User
+            {
+                Username = user.Username,
+                Password = user.Password,
+                Email = user.Email,
+                Description = user.Description,
+                Img = user.Img,
+                Role = "User",
+            };
+            var content = new StringContent(JsonSerializer.Serialize(newuser));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var uri = UserApiUrl + userId;
+
+            var response = await client.PutAsync(uri, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // The request was successful, so get the user data from the response
+                var usersu = await response.Content.ReadAsStringAsync();
+
+                // Return the user data to the view
+                return RedirectToAction("Details", "Users");
+            }
+            else
+            {
+                // The request was not successful, so return an error
+                return BadRequest();
+            }
         }
     }
 }

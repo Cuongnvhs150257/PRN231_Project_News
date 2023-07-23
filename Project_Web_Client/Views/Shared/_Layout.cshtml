@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var userId = Context.Session.GetInt32("UserId");
+    var userName = Context.Session.GetString("Username");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -72,8 +77,22 @@
                 <a href="#" class="mx-2 js-search-open"><span class="bi-search"></span></a>
                 <i class="bi bi-list mobile-nav-toggle"></i>
 
-                <a href="@Url.Action("Index","Users")" class="mx-2"><span class="">Loign</span></a>
+                <a href="@Url.Action("Index","Users")" class="mx-2">
+                        @if(userId == null){
+                        <span class="">Login</span>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Details","Users")" class="mx-2"><span class="">@userName</span></a>
+                    }
 
+                    </a>
+
+                @if(userId != null)
+                {
+                      <a href="@Url.Action("Logout","Users")" class="mx-2"><span class="">Logout</span></a>
+                
+                }
                 <!-- ======= Search Form ======= -->
                 <div class="search-form-wrap js-search-form-wrap">
                     <form action="search-result.html" class="search-form">
