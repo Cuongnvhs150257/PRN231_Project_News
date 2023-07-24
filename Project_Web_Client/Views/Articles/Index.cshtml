@@ -69,7 +69,7 @@
                             <h3><a href="@Url.Action("Details","Articles",new{articleId = @item.ArticleId} )">@Html.DisplayFor(modelItem => item.Title)</a></h3>
                             <p>@Html.DisplayFor(modelItem => item.Summary)</p>
                             <div class="d-flex align-items-center author">
-                                <div class="photo"><img src="assets/img/person-2.jpg" alt="" class="img-fluid"></div>
+                                <div class="photo"><img src="@Html.DisplayFor(modelItem => item.User.Img)" alt="" class="img-fluid"></div>
                                 <div class="name">
                                     <h3 class="m-0 p-0">@Html.DisplayFor(modelItem => item.User.Username)</h3>
                                 </div>
@@ -162,7 +162,7 @@
         </div>
     </div>
 </section>
-        </section> <!-- End Post Grid Section -->
+
 
 <script>
     $(document).ready(function() {

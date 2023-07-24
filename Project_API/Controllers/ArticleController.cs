@@ -24,7 +24,7 @@ namespace Project_API.Controllers
         public IActionResult GetArticles()
         {
             List<Article> articles = _context.Articles.Include(x => x.User).Include(x => x.Categories).ToList();
-            return Ok(_mapper.Map<List<ArticleDTO>>(articles));
+            return Ok(_mapper.Map<List<Article>>(articles));
         }
 
         [Route("GetArticle/{id}")]
