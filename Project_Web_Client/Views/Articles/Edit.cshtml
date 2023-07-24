@@ -1,4 +1,4 @@
-﻿@model Project_API.Models.Article
+﻿@model Project_API.DTO.ArticleDTO
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,42 +10,47 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" asp-controller="Articles" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ArticleId" />
+            <input type="hidden" asp-for="ArticleId" value="@Model.ArticleId" />
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control" style="margin-bottom:20px" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
+                <p>Content</p>
+                <textarea asp-for="Content" class="form-control" style="height:150px;width:400px; ;margin-bottom:20px"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CreateDate" class="control-label"></label>
-                <input asp-for="CreateDate" class="form-control" />
+                <input asp-for="CreateDate" class="form-control" style="margin-bottom:20px" />
                 <span asp-validation-for="CreateDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EditDate" class="control-label"></label>
-                <input asp-for="EditDate" class="form-control" />
+                <input asp-for="EditDate" class="form-control" style="margin-bottom:20px" />
                 <span asp-validation-for="EditDate" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Img" class="control-label"></label>
+                <input asp-for="Img" class="form-control" style="margin-bottom:20px" />
+                <span asp-validation-for="Img" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="View" class="control-label"></label>
-                <input asp-for="View" class="form-control" />
+                <input asp-for="View" class="form-control" style="margin-bottom:20px" />
                 <span asp-validation-for="View" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Summary" class="control-label"></label>
-                <input asp-for="Summary" class="form-control" />
+                <p>Summary</p>
+                <textarea asp-for="Summary" class="form-control" style="height:100px;width:400px; ;margin-bottom:20px"></textarea>
                 <span asp-validation-for="Summary" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId" style="margin-bottom:20px" ></select>
                 <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -56,9 +61,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a href="@Url.Action("Detail","Articles",new {articleId = Model.ArticleId})">Back to Details</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

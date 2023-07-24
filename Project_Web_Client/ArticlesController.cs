@@ -52,7 +52,7 @@ namespace Project_Web_Client
             {
                 PropertyNameCaseInsensitive = true,
             };
-            Article article = JsonSerializer.Deserialize<Article>(strData, options);
+            ArticleDTO article = JsonSerializer.Deserialize<ArticleDTO>(strData, options);
             return View(article);
         }
 
@@ -67,24 +67,38 @@ namespace Project_Web_Client
             {
                 PropertyNameCaseInsensitive = true,
             };
-            Article article = JsonSerializer.Deserialize<Article>(strData, options);
+            ArticleDTO article = JsonSerializer.Deserialize<ArticleDTO>(strData, options);
+            
             return View(article);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Edit(ArticleDTO articleId)
-        //{
-        //    var uri = "http://localhost:5071/api/Article/GetArticle/ " + articleId;
-        //    var response = await client.GetAsync(uri);
+        [HttpPost]
+        public async Task<IActionResult> Edit(int articleId, ArticleDTO article)
+        {
 
-        //    string strData = await response.Content.ReadAsStringAsync();
-        //    var options = new JsonSerializerOptions
-        //    {
-        //        PropertyNameCaseInsensitive = true,
-        //    };
-        //    Article article = JsonSerializer.Deserialize<Article>(strData, options);
-        //    return View(article);
-        //}
+            if (articleId == null)
+            {
+                return NotFound("ArticleId is null");
+            }
+
+            var content = new StringContent(JsonSerializer.Serialize(article));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            var uri = "http://localhost:5071/api/Article/EditNews?articleId=" + articleId;
+            var response = await client.PutAsync(uri, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Return the user data to the view
+                return RedirectToAction("Details", "Articles", new { articleId = articleId });
+            }
+            else
+            {
+                // The request was not successful, so return an error
+                return BadRequest();
+            }
+        }
+
 
 
     }

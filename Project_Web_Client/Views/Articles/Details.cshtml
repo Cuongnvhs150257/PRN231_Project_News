@@ -1,4 +1,4 @@
-﻿@model Project_API.Models.Article
+﻿@model Project_API.DTO.ArticleDTO
 
 @{
     ViewData["Title"] = "Details";
@@ -138,15 +138,19 @@
                             </figure>
                             <p> @Html.DisplayFor(model => model.Content)</p>
                            
-                            <p>@Html.DisplayFor(model => model.User.Username)</p>
+                            <p>@Html.DisplayFor(model => model.UserId)</p>
                         </div><!-- End Single Post Content -->
 
                         @if (userId != null)
                         {
                             <div>
-                                <a asp-action="Edit" asp-route-id="@Model.ArticleId">Edit</a> |
-                                <a asp-action="Index">Back to List</a>
+                                <a href="@Url.Action("Edit","Articles",new {articleId = Model.ArticleId})">Edit</a> |<a asp-action="Index">Back to List</a>
+                               
                             </div>
+                        }
+                        else
+                        {
+                            <a asp-action="Index">Back to List</a>
                         }
                     </div>
                     <div class="col-md-3">
