@@ -81,8 +81,15 @@ namespace Project_Web_Client
                 return NotFound("ArticleId is null");
             }
 
-            var content = new StringContent(JsonSerializer.Serialize(article));
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+
+            var listCate = new List<Category>();
+            var cate = new Category()
+            {
+                CategoryId = 3,
+                CategoryName = "đời sống"
+            };
+            listCate.Add(cate);
 
             var newaticle = new Article
             {
@@ -92,18 +99,21 @@ namespace Project_Web_Client
                 CreateDate = article.CreateDate,
                 EditDate = article.EditDate,
                 Img = article.Img,
+                View = article.View,
                 Summary = article.Summary,
-                UserId = article.UserId
-
+                UserId = article.UserId,
+                Categories = listCate
             };
 
+            var content = new StringContent(JsonSerializer.Serialize(newaticle));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             var uri = "http://localhost:5071/api/Article/EditNews?articleId=" + articleId;
             var response = await client.PutAsync(uri, content);
 
             if (response.IsSuccessStatusCode)
             {
                 // Return the user data to the view
-                return RedirectToAction("Details", "Articles", new { articleId = articleId });
+                return RedirectToAction("Index", "Articles");
             }
             else
             {
@@ -132,5 +142,58 @@ namespace Project_Web_Client
             }
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            return View();
+        }
+
+        ////[HttpPost]
+        public async Task<IActionResult> Create(ArticleDTO article)
+        {
+            if (article == null)
+            {
+                return NotFound("category name is null");
+            }
+
+            var listCate = new List<Category>();
+            var cate = new Category()
+            {
+                CategoryId = 2,
+                CategoryName = "công nghệ"
+            };
+            listCate.Add(cate);
+            var newArticle = new Article
+            {
+               ArticleId = new int(),
+               Categories = listCate,
+               Title = article.Title,
+               Summary = article.Summary,
+               Content = article.Content,
+               CreateDate = article.CreateDate,
+               EditDate = article.EditDate,
+               Img = article.Img,
+               UserId = article.UserId,              
+            };
+            var content = new StringContent(JsonSerializer.Serialize(newArticle));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var uri = "http://localhost:5071/api/Article/CreateNews";
+
+            var response = await client.PostAsync(uri, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+
+                // Return the user data to the view
+                return RedirectToAction("Index", "Articles");
+            }
+            else
+            {
+                // The request was not successful, so return an error
+                return BadRequest();
+            }
+        }
     }
 }
