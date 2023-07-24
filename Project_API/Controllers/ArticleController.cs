@@ -61,6 +61,24 @@ namespace Project_API.Controllers
                 return Conflict(ex);
             }
         }
+
+        [Route("GetArticleByTitle/{title}")]
+        [HttpGet]
+        public IActionResult GetArticleByTitle(string title)
+        {
+            try
+            {
+                List<Article> articles = _context.Articles.Include(x => x.User).Include(x => x.Categories).Where(x => x.Title.Contains(title)).ToList();
+
+                return Ok(_mapper.Map<List<Article>>(articles));
+            }
+            catch (Exception ex)
+            {
+
+                return Conflict(ex);
+            }
+        }
+
         [HttpPost("CreateNews")]
         public IActionResult CreateNews(ArticleDTO article)
         {

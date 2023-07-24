@@ -100,11 +100,13 @@
                 }
                 <!-- ======= Search Form ======= -->
                 <div class="search-form-wrap js-search-form-wrap">
-                    <form action="search-result.html" class="search-form">
-                        <span class="icon bi-search"></span>
-                        <input type="text" placeholder="Search" class="form-control">
+                    <form asp-controller="Articles" asp-action="Index" method="post" class="search-form">
+                         <span class="icon bi-search"></span>
+                         <button type="submit" class="d-none"></button>
+                        <input type="text" placeholder="Search" name="Title" class="form-control">
                         <button class="btn js-search-close"><span class="bi-x"></span></button>
                     </form>
+
                 </div><!-- End Search Form -->
 
             </div>
