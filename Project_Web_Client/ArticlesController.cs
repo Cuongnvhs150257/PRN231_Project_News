@@ -84,6 +84,19 @@ namespace Project_Web_Client
             var content = new StringContent(JsonSerializer.Serialize(article));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
+            var newaticle = new Article
+            {
+                ArticleId = article.ArticleId,
+                Content = article.Content,
+                Title = article.Title,
+                CreateDate = article.CreateDate,
+                EditDate = article.EditDate,
+                Img = article.Img,
+                Summary = article.Summary,
+                UserId = article.UserId
+
+            };
+
             var uri = "http://localhost:5071/api/Article/EditNews?articleId=" + articleId;
             var response = await client.PutAsync(uri, content);
 
@@ -99,7 +112,25 @@ namespace Project_Web_Client
             }
         }
 
+        public async Task<IActionResult> Delete(int articleId)
+        {
+            if (articleId == null)
+            {
+                return NotFound("userid is null");
+            }
+            var uri = "http://localhost:5071/api/Article/DeleteArticle/" + articleId;
+            var response = await client.DeleteAsync(uri);
 
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "Articles");
+            }
+            else
+            {
+                // The request was not successful, so return an error
+                return BadRequest();
+            }
+        }
 
     }
 }
