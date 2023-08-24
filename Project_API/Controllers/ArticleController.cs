@@ -23,7 +23,7 @@ namespace Project_API.Controllers
         [HttpGet]
         public IActionResult GetArticles()
         {
-            List<Article> articles = _context.Articles.Include(x => x.User).Include(x => x.Categories).ToList();
+            List<Article> articles = _context.Articles.Include(x => x.User).Include(x => x.Categories).OrderByDescending(x => x.EditDate).ToList();
             return Ok(_mapper.Map<List<Article>>(articles));
         }
 
@@ -80,11 +80,11 @@ namespace Project_API.Controllers
         }
 
         [HttpPost("CreateNews")]
-        public IActionResult CreateNews(ArticleDTO article)
+        public IActionResult CreateNews(ArticleDTO article, int userId)
         {
             try
             {
-                if (article == null)
+                if (article == null || userId == null)
                 {
                     return BadRequest();
                 }
@@ -95,7 +95,7 @@ namespace Project_API.Controllers
                 newArticle.CreateDate = article.CreateDate;
                 newArticle.EditDate = article.EditDate;
                 newArticle.View = article.View;
-                newArticle.UserId = 2;
+                newArticle.UserId = userId;
                 newArticle.Content = article.Content;
                 newArticle.Summary = article.Summary;
                 newArticle.Img = article.Img;
@@ -129,11 +129,11 @@ namespace Project_API.Controllers
         }
 
         [HttpPut("EditNews")]
-        public IActionResult EditNews(int articleId, ArticleDTO article)
+        public IActionResult EditNews(int articleId, ArticleDTO article, int userId)
         {
             try
             {
-                if (articleId == null || article == null)
+                if (articleId == null || article == null || userId == null)
                 {
                     return BadRequest();
                 }
@@ -150,7 +150,7 @@ namespace Project_API.Controllers
                 existArticle.EditDate = DateTime.Now;
                 existArticle.View = article.View;
                 existArticle.Summary = article.Summary;
-                existArticle.UserId = 2;
+                existArticle.UserId = userId;
                 existArticle.Img = article.Img;
 
                 foreach (var cate in existArticle.Categories.ToList())

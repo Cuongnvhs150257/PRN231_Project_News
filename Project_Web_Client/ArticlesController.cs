@@ -75,6 +75,7 @@ namespace Project_Web_Client
         [HttpPost]
         public async Task<IActionResult> Edit(int articleId, ArticleDTO article)
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
 
             if (articleId == null)
             {
@@ -101,13 +102,13 @@ namespace Project_Web_Client
                 Img = article.Img,
                 View = article.View,
                 Summary = article.Summary,
-                UserId = article.UserId,
+                UserId = (int)userId,
                 Categories = listCate
             };
 
             var content = new StringContent(JsonSerializer.Serialize(newaticle));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            var uri = "http://localhost:5071/api/Article/EditNews?articleId=" + articleId;
+            var uri = "http://localhost:5071/api/Article/EditNews?articleId=" + articleId + "&userId=" + userId;
             var response = await client.PutAsync(uri, content);
 
             if (response.IsSuccessStatusCode)
@@ -153,6 +154,8 @@ namespace Project_Web_Client
         ////[HttpPost]
         public async Task<IActionResult> Create(ArticleDTO article)
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
             if (article == null)
             {
                 return NotFound("category name is null");
@@ -175,11 +178,11 @@ namespace Project_Web_Client
                CreateDate = article.CreateDate,
                EditDate = article.EditDate,
                Img = article.Img,
-               UserId = article.UserId,              
+               UserId = (int)userId,              
             };
             var content = new StringContent(JsonSerializer.Serialize(newArticle));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            var uri = "http://localhost:5071/api/Article/CreateNews";
+            var uri = "http://localhost:5071/api/Article/CreateNews?userId=" + userId;
 
             var response = await client.PostAsync(uri, content);
 
